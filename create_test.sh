@@ -85,9 +85,11 @@ MPIENV_ESC=`escape_path $MPIENV`
 
 
 mkdir -p $CLEANDIR
+echo "#!/bin/bash" > $CLEANDIR/slurm.job
+cat ./templates/slurm_header.txt >> $CLEANDIR/slurm.job
 cat ./templates/clear_$pm.job \
     | sed -e "s/@MPI_ENV@/$MPIENV_ESC/g" \
-    | sed -e "s/@SLURMVAR@/$DMTCPENV_ESC/g" > $CLEANDIR/slurm.job
+    | sed -e "s/@SLURMVAR@/$DMTCPENV_ESC/g" >> $CLEANDIR/slurm.job
 
 
 . $MPIENV
@@ -106,13 +108,18 @@ for dmtcp in `print_variants dmtcp shell`; do
     DMTCPENV_ESC=`escape_path $DMTCPENV`
 
     mkdir -p $DMTCPDIR
+    echo "#!/bin/bash" > $DMTCPDIR/slurm_ckpt.job
+    cat ./templates/slurm_header.txt >> $DMTCPDIR/slurm_ckpt.job
     cat ./templates/slurm_ckpt_$pm.job \
         | sed -e "s/@MPI_ENV@/$MPIENV_ESC/g" \
-        | sed -e "s/@DMTCP_ENV@/$DMTCPENV_ESC/g" > $DMTCPDIR/slurm_ckpt.job
+        | sed -e "s/@DMTCP_ENV@/$DMTCPENV_ESC/g" >> $DMTCPDIR/slurm_ckpt.job
+    
+    echo "#!/bin/bash" > $DMTCPDIR/slurm_rstr.job
+    cat ./templates/slurm_header.txt >> $DMTCPDIR/slurm_rstr.job
     
     cat ./templates/slurm_rstr.job \
         | sed -e "s/@MPI_ENV@/$MPIENV_ESC/g" \
-        | sed -e "s/@DMTCP_ENV@/$DMTCPENV_ESC/g" > $DMTCPDIR/slurm_rstr.job
+        | sed -e "s/@DMTCP_ENV@/$DMTCPENV_ESC/g" >> $DMTCPDIR/slurm_rstr.job
     
     mpicc -o $DMTCPDIR/binary -g -O0 ./progdir/$prog.c $LINKING
 done

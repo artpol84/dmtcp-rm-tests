@@ -1,11 +1,3 @@
-#!/bin/bash
-# Put your SLURM options here
-#SBATCH --time=00:30:00           # put proper time of reservation here
-#SBATCH --nodes=4                 # number of nodes
-#SBATCH --ntasks-per-node=1       # processes per node
-#SBATCH --job-name="hellompi_c"
-#SBATCH --partition=batch
-# ? Any other batch options ?
 
 # Print out SLURM job information. Remove it if you don't need it
 echo "SLURM_JOBID="$SLURM_JOBID

@@ -1,0 +1,7 @@
+# Put your SLURM options here
+#SBATCH --time=00:30:00           # put proper time of reservation here
+#SBATCH --nodes=2                 # number of nodes
+#SBATCH --ntasks-per-node=1       # processes per node
+#SBATCH --job-name="hellompi_c"
+#SBATCH --output=hellompi_c.std
+#SBATCH --error=hellompi_c.err
